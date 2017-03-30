@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script type="text/javascript" src = "js/scripts.js"></script>
+	<script async defer	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKNgdNc2Fw6SMLBpcYYIPZr4mbx03w2CQ&callback=initMap"></script>
+	<title></title>
+</head>
+	<body>
+		<div id = "menu">
+			<button id = "menuButton" onclick="displayMenu();" value="1">&#9776;</button>
+			<div id = "contMenu">
+				<h3>Options</h3>
+				<div id = "renHouse">
+					<input type="checkbox" name=""> Rent Houses:
+					<br>
+					Min:&nbsp;<input id = "minMax" type="text" name="min" size="5">
+					Max:&nbsp;<input id = "minMax" type="text" name="max" size="5">
+				</div>
+			</div>
+		</div>
+		<div id = "map"></div>
+	</body>
+</html>

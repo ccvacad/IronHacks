@@ -1,0 +1,51 @@
+body{
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+#menu{
+	position: absolute;
+    z-index: 1;
+    width: 300px;
+    height: 100vh;
+    background-color: #fff;
+    visibility: hidden;
+    opacity: 0.95;
+    overflow:scroll;
+}
+
+#map {
+	float: left;
+    width: 100%;
+    height: 100vh;
+    background-color: grey;
+ }
+
+ #menuButton{
+	position: absolute;
+ 	margin-left: 0px;
+ 	margin-top: 0PX;
+ 	visibility: visible;
+ 	opacity: 1;
+ 	z-index: 2;
+    display: inline-block;
+    border: none;
+    background-color: #008CBA;
+    color: #fff;
+    font-size: 16px;
+    height: 30px;
+    width: 30px;
+ }
+
+ #contMenu{
+ 	margin: 40px 10px;
+ }
+
+#renHouse{
+	background-color: #f0f0f0;
+	padding: 10px 10px;
+	border-radius: 10px;
+}
+ #minMax{
+ }
