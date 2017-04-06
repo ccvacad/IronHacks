@@ -47,5 +47,20 @@ body{
 	padding: 10px 10px;
 	border-radius: 10px;
 }
- #minMax{
- }
+
+.points, .points svg {
+  position: absolute;
+}
+
+.points svg {
+  width: 60px;
+  height: 20px;
+  padding-right: 100px;
+  font: 10px sans-serif;
+}
+
+.points circle {
+  fill: brown;
+  stroke: black;
+  stroke-width: 1.5px;
+}
