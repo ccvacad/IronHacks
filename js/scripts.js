@@ -2,16 +2,6 @@ function initMap(){
 	var lt = 41.8708;
 	var lg = -87.6505;
 	var title = 'Department of Computer Science - University of Illinois';
-	//var mapDiv = document.getElementById('map'); //Line 1: Save reference to div element where map would be shown
-	/*var map = new google.maps.Map(mapDiv, {//Line 2: Create Map object passing element reference, center and zoom as parameters
-		center: {lat: lt, lng: lg}, //This is Purdue University's Location
-		zoom: 15,
-    	mapTypeControlOptions: {
-        	style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-       		position: google.maps.ControlPosition.LEFT_BOTTOM
-    	}
-	});
-	*/
 	var map = new google.maps.Map(d3.select("#map").node(), {
   		zoom: 15,
 	  	center: new google.maps.LatLng(lt, lg),
@@ -22,20 +12,35 @@ function initMap(){
     	}
 	});
 
-
-	makePoint(map, lt, lg, title);
-	loadApp(map);
+	loadPoints(map);
+	makePoint(map, lt, lg, title, "img/university.png");
 }
 
-function makePoint(map, lt, lg, title){
-	var marker = new google.maps.Marker({ //Line 1
-		position: {lat: lt, lng: lg}, //Line2: Location to be highlighted
-		map: map,//Line 3: Reference to map object
-		title: title //Line 4: Title to be given
+function loadPoints(map){
+	$.getJSON("https://data.cityofchicago.org/api/views/s6ha-ppgi/rows.json ", function (data) {
+		for(i in data["data"]){
+			makePoint(map, parseFloat(data["data"][i][19]), parseFloat(data["data"][i][20]), "", "img/home-pointer-icon.png");
+		}
 	});
 }
 
-function displayMenu(){
+function makePoint(map, lt, lg, title, ico){
+	var icon = {
+		url: ico,
+	    scaledSize: new google.maps.Size(42, 42), // scaled size
+	    origin: new google.maps.Point(0,0), // origin
+	    anchor: new google.maps.Point(0, 0) // anchor	
+
+	};
+	var marker = new google.maps.Marker({ //Line 1
+		position: {lat: lt, lng: lg}, //Line2: Location to be highlighted
+		map: map,//Line 3: Reference to map object
+		title: title, //Line 4: Title to be given
+		icon: icon
+	});
+}
+
+/*function displayMenu(){
 	var button = document.getElementById('menuButton');
 	var menu = document.getElementById('menu');
 
@@ -53,7 +58,7 @@ function displayMenu(){
 	}
 }
 
-function loadApp(map){
+/*function loadApp(map){
 	// Load the station data. When the data comes back, create an overlay.
 	d3.json("https://data.cityofchicago.org/api/views/s6ha-ppgi/rows.json", function(error, data) {
 	  	if (error) throw error;
@@ -103,4 +108,4 @@ function loadApp(map){
 	  	// Bind our overlay to the map…
 	  	overlay.setMap(map);
 	});
-}
+}*/

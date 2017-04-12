@@ -2,7 +2,7 @@ Readme Introduction
 
 This is a guide for how to set up your README.md file for your IronHack Application. The file should have following fields:
 
-    Name of your Application
+    Name of your Application: Find Home In Chicago
 
     Keywords You should include at least 3 keywords for your project to identify the features of your project, such as: 
 
