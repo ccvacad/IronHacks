@@ -12,7 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script type="text/javascript" src = "js/scripts.js"></script>
 	
-	<script async defer	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKNgdNc2Fw6SMLBpcYYIPZr4mbx03w2CQ&callback=initMap"></script>
+	<script async defer	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKNgdNc2Fw6SMLBpcYYIPZr4mbx03w2CQ&callback=initMap&v=3.exp&libraries=visualization"></script>
 	
 	<script src="js/d3.v3.min.js" charset="utf-8"></script>
 
@@ -24,7 +24,6 @@
 	<title>Find Home In Chicago</title>
 </head>
 	<body style="background-color: #f0f0f0">
-		<div>&nbsp;</div>
 		<div class = "container rounded" style="background-color: #fff">
 			<div class = "row">
 				<div class = "col-sm-12">
@@ -43,18 +42,40 @@
 					<table width="100%">
 						<tr>
 							<td align="left">
+								<p> <img class = "iconFilters" src="img/college.png"> <b>University</b> </p>
+							</td>
+							<td align="right">
+								<input id = "universityOption" data-toggle="toggle" data-size="mini" type="checkbox" checked>
+							</td>
+						</tr>
+					</table>		
+					<hr>
+					<table width="100%">
+						<tr>
+							<td align="left">
+								<p> <img class = "iconFilters" src="img/home.png"> <b>Places</b> </p>
+							</td>
+							<td align="right">
+								<input id = "placesOption" data-toggle="toggle" data-size="mini" type="checkbox" checked>
+							</td>
+						</tr>
+					</table>		
+					<hr>
+					<table width="100%">
+						<tr>
+							<td align="left">
 								<p> <img class = "iconFilters" src="img/price.png"> <b>Price</b> </p>
 							</td>
 							<td align="right">
-								<input data-toggle="toggle" data-size="mini" type="checkbox">
+								<input id = "priceOption" data-toggle="toggle" data-size="mini" type="checkbox">
 							</td>
 						</tr>
 						<tr>
 							<td align="center"> 
-								Min: <input type="number" name="" style="width: 50%;">
+								Min: <input type="number" name="" style="width: 50%;" min = "0">
 							</td>
 							<td align="left">
-								Max: <input type="number" name="" style="width: 50%;">
+								Max: <input type="number" name="" style="width: 50%;" min = "0">
 							</td>
 						</tr>
 					</table>		
@@ -65,12 +86,18 @@
 								<p> <img class = "iconFilters" src="img/crimes.png"> <b>Crimes</b> </p>
 							</td>
 							<td align="right">
-								<input data-toggle="toggle" data-size="mini" type="checkbox">
+								<button id = "btnCrimesMarker" type="button" class="btn btn-sm btn-info" style="visibility: hidden;" onclick="visibleMarkerPointsCrimes()"></button>
+							</td>
+							<td align="right">
+								<button id = "btnHeatMap" type="button" class="btn btn-sm btn-info" style="visibility: hidden;" onclick="heatmap();"></button>
+							</td>
+							<td align="right">							
+								<input id = "crimesOption" data-toggle="toggle" data-size="mini" type="checkbox">
 							</td>
 						</tr>
 					</table>
 					<hr>
-					<button type="button" class="btn btn-primary btnFilter active">Apply</button>
+					<button type="button" class="btn btn-primary btnFilter active" onclick="options();">Apply</button>
 					<br>
 				</div>
 				<div class = "col-sm-8">
@@ -86,5 +113,37 @@
 			</div>
 		</div>
 		<div>&nbsp;</div>
+		<!-- Modal --> 
+			<div class="modal fade" id="myModal" role="dialog"  data-backdrop="true" style="z-index:1000000000"> 
+		    	<div class="modal-dialog modal-lg">
+		    
+		      	<!-- Modal content--> 
+		      		<div id = "modalContent" class="modal-content">
+		        		<div class="modal-header">
+		          			<button type="button" class="close" data-dismiss="modal">&times;</button>
+		          			<h4 id = "modalName" class="modal-title"></h4>
+		        		</div> 
+		        		'<div class="modal-body"> 
+		        			<div class = "divImgMoreInfo">
+		        				<img id = "modalImg" class = "img-responsive imgMoreInfo" style="max-height: 200px;">
+		        			</div>
+		        			<div class = "moreInfo">
+		        				<table border = "1" width = "100%">
+        							<tr> <td class = "moreInfoCol1"> Addres: </td> <td id = "modalAddres" class = "moreInfoCol2"></td></tr>
+        							<tr> <td class = "moreInfoCol1"> Phone: </td> <td id = "modalPhone" class = "moreInfoCol2"></td></tr>
+        							<tr> <td class = "moreInfoCol1"> Commpany: </td> <td id = "modalCompany" class = "moreInfoCol2"></td></tr>
+        							<tr> <td class = "moreInfoCol1"> Type of Property: </td> <td id = "modalType" class = "moreInfoCol2"></td></tr>
+        							<tr> <td class = "moreInfoCol1"> Community Area: </td> <td id = "modalArea" class = "moreInfoCol2"></td></tr>
+									<tr> <td class = "moreInfoCol1"> Price: </td> <td class = "moreInfoCol2"></td></tr>
+									<tr> <td class = "moreInfoCol1"> Distance: </td> <td id = "modalDistance" class = "moreInfoCol2"></td></tr>
+        						</table>
+		        			</div>
+		        		</div>
+		        		<div class="modal-footer">
+		          			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        		</div>
+		      		</div>
+		    	</div>
+		  	</div> 
 	</body>
 </html>
