@@ -20,6 +20,8 @@ Datasets
 
 Crimes: https://data.cityofchicago.org/resource/6zsd-86xi.json
 Rental: https://data.cityofchicago.org/api/views/s6ha-ppgi/rows.json
+Police stations: https://data.cityofchicago.org/api/views/z8bn-74gv/rows.json
+Weather: http://api.openweathermap.org/data/2.5/weather?q=chicago&appid=6aa0bdb1f586c5630d60b6237dfce45c
 
 
 Description:

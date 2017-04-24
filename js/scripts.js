@@ -27,9 +27,11 @@ function initMap(){
 		icon: icon
 	});
 
+	weatherData();
 	loadPoints();
-
 };
+
+
 
 function loadPoints(){
 	$.getJSON("https://data.cityofchicago.org/api/views/s6ha-ppgi/rows.json ", function (data) {
@@ -53,7 +55,7 @@ function loadPoints(){
 };
 
 var infWindow;    
-var  placesPoints = [];
+var placesPoints = [];
 function makePoint(data, ico){
 	var contentString = 
 		'<div id="content">'+
@@ -87,7 +89,8 @@ function makePoint(data, ico){
 		position: {lat: data.lat, lng: data.lon}, //Line2: Location to be highlighted
 		map: map,//Line 3: Reference to map object
 		title: data.name, //Line 4: Title to be given
-		icon: icon
+		icon: icon, 
+		price: data.price
 	});
 
 
@@ -103,6 +106,7 @@ function makePoint(data, ico){
         document.getElementById('modalType').innerHTML = data.type;
         document.getElementById('modalArea').innerHTML = data.area;
         distance(data.lat, data.lon);
+
   	});
 
   	placesPoints.push(marker);
@@ -113,30 +117,43 @@ function distance(lt, lg){
 	var destination = {lat: lt, lng: lg}
 	var service = new google.maps.DistanceMatrixService();
 	var res;
-    service.getDistanceMatrix({
-        origins: [source],
-        destinations: [destination],
-        travelMode: google.maps.TravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.METRIC,
-        avoidHighways: false,
-        avoidTolls: false
-    }, function (response, status) {
-        if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS") {
-            var distance = response.rows[0].elements[0].distance.text;
-            var duration = response.rows[0].elements[0].duration.text;
-            res = distance;
-        } else {
-            res = "Unable to find the distance via road.";
-        }
-        document.getElementById('modalDistance').innerHTML = res;
-    });
+	//var travelModes = ["DRIVING", "WALKING", "BICYCLING", "TRANSIT"];
+	//for(var i = 0; i < travelModes.length; i++){
+		service.getDistanceMatrix({
+	        origins: [source],
+	        destinations: [destination],
+	        //travelMode: google.maps.TravelMode[travelModes[i]],
+	        travelMode: google.maps.TravelMode.DRIVING,
+	        unitSystem: google.maps.UnitSystem.METRIC,
+	        avoidHighways: false,
+	        avoidTolls: false
+	    }, function (response, status) {
+	        if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS") {
+	            var distance = response.rows[0].elements[0].distance.text;
+	            var duration = response.rows[0].elements[0].duration.text;
+	            res = distance;
+	        } else {
+	            res = "Unable to find the distance via road.";
+	        }
+	        document.getElementById("modalDistance").innerHTML = res;
+	    });
+	//}
 };
+
+
 
 function options(){
 	if(document.getElementById("crimesOption").checked == true)
 		crimes(true);
 	else
 		crimes(false);
+
+	if(document.getElementById("policeOption").checked == true)
+		policeStationPoints();
+	else
+		for(i = 0; i < policePoints.length; i++)
+			policePoints[i].setMap(null);
+
 	if(document.getElementById("universityOption").checked == true)
 		markerUniversity.setMap(map);
 	else
@@ -149,7 +166,12 @@ function options(){
 		for(i = 0; i < placesPoints.length; i++)
 			placesPoints[i].setMap(null);
 
-	if(document.getElementById("priceOption").checked == true);
+	if(document.getElementById("priceOption").checked == true)
+		for(i = 0; i < placesPoints.length; i++)
+			if(document.getElementById("minPrice").value <= placesPoints[i].price && document.getElementById("maxPrice").value >= placesPoints[i].price)
+				placesPoints[i].setMap(map);
+			else
+				placesPoints[i].setMap(null);
 };
 
 var crimePoints = [];
@@ -212,13 +234,9 @@ function toggleHeatmap() {
 
 function crimes(op){
 	if(op){	
-		document.getElementById("btnHeatMap").style.visibility = 'visible';
-		document.getElementById("btnHeatMap").innerHTML = 'Hide Heat Map'
-		document.getElementById("btnCrimesMarker").style.visibility = 'visible';
-		document.getElementById("btnCrimesMarker").innerHTML = 'Hide Marker'
 		//request places data
 		var xmlhttp = new XMLHttpRequest();
-		var url = "https://data.cityofchicago.org/resource/6zsd-86xi.json"
+		var url = "https://data.cityofchicago.org/resource/6zsd-86xi.json";
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send();
 		var locations = [];
@@ -243,6 +261,11 @@ function crimes(op){
       				data : locations,
       				map: map
    				});
+
+   				document.getElementById("btnHeatMap").style.visibility = 'visible';
+				document.getElementById("btnHeatMap").innerHTML = 'Hide Heat Map'
+				document.getElementById("btnCrimesMarker").style.visibility = 'visible';
+				document.getElementById("btnCrimesMarker").innerHTML = 'Hide Marker'
 		    }
 		}
 	}
@@ -257,3 +280,86 @@ function crimes(op){
 			crimesHeatMap.setMap(null);
 	}
 };
+
+function weatherData(){
+	var xmlhttp = new XMLHttpRequest();
+	var url = "http://api.openweathermap.org/data/2.5/weather?q=chicago&appid=6aa0bdb1f586c5630d60b6237dfce45c";
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+	xmlhttp.onreadystatechange = function() {
+	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	      	var myArr = xmlhttp.responseText;
+	      	var text = myArr;
+	      	var json = JSON.parse(text);
+	      	document.getElementById('weather').innerHTML = "Today the weather is <b>" + json.weather[0].description + "</b> <img src = 'http://openweathermap.org/img/w/" + json.weather[0].icon + ".png'>";
+	      	
+	    }
+	};
+}
+
+
+var policePoints = [];
+
+function makePointsPoliceStations(data){
+
+	var contentString =
+		'<div id="content">'+
+      		'<div id="siteNotice">'+
+      		'</div>'+
+      		'<h5 id="firstHeading" class="firstHeading">' + data.name + '</h5>'+
+	      	'<div id="bodyContent">'+
+	      		'<br><b>Addres: </b>' + data.addres +
+	      		'<br><b>Phone: </b>' + data.phone +
+	      	'</div>'+
+      	'</div>';
+
+	var icon = {
+		url: "img/iconPolice.png",
+	    scaledSize: new google.maps.Size(42, 42), // scaled size
+	    origin: new google.maps.Point(0,0), // origin
+	    anchor: new google.maps.Point(0, 0) // anchor	
+	};
+
+	var policeMarker = new google.maps.Marker({
+        position: data.location,
+        map: map,
+        icon: icon,
+        title: data.name
+    });
+
+  	policeMarker.addListener('click', function() {
+		new google.maps.InfoWindow({
+				content: contentString
+		}).open(map, policeMarker);
+	});
+
+	policePoints.push(policeMarker);
+};
+
+
+function policeStationPoints(){
+	var xmlhttp = new XMLHttpRequest();
+	var url = "https://data.cityofchicago.org/api/views/z8bn-74gv/rows.json";
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+	var locations = [];
+	xmlhttp.onreadystatechange = function() {
+	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	      	var myArr = xmlhttp.responseText;
+	      	var text = myArr;
+	      	var json = JSON.parse(text);
+	      	for (var i = 0; i<json.data.length; i++) {
+	          	var data = {
+	            	name: json.data[i][9],
+	            	addres: json.data[i][10],
+	            	phone: json.data[i][15][0],
+	            	location: new google.maps.LatLng(parseFloat(json.data[i][20]), parseFloat(json.data[i][21]))
+	          	};
+	          	makePointsPoliceStations(data);
+	      	}
+	    }
+	}
+	
+	
+	
+}

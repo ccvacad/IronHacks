@@ -2,12 +2,17 @@
 <html>
 <head>
 	<meta content="utf-8" http-equiv="encoding">
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 	<meta charset="utf-8">
+
+	<link rel="icon" type="image/png" href="img/iconTitle.png" sizes="36x48">
+
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script> -->
+	<script src="js/jquery.min.js"></script>
+	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+	<script src="js/bootstrap.min.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script type="text/javascript" src = "js/scripts.js"></script>
@@ -18,8 +23,6 @@
 
 	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-
-	<link rel="icon" href="img/iconTitle.png" />
 	
 	<title>Find Home In Chicago</title>
 </head>
@@ -33,7 +36,18 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">&nbsp;</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div id = "weather" class="weather">
+						
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<hr>
+				</div>
+			</div>
 			<div class = "row">
 				<div class = "col-sm-4">
 					<h4> <img class = "menuIcon" src="img/threelines.png"> Options</h4>
@@ -42,10 +56,10 @@
 					<table width="100%">
 						<tr>
 							<td align="left">
-								<p> <img class = "iconFilters" src="img/college.png"> <b>University</b> </p>
+								<img class = "iconFilters" src="img/college.png"> <b>University</b>
 							</td>
 							<td align="right">
-								<input id = "universityOption" data-toggle="toggle" data-size="mini" type="checkbox" checked>
+								<input id = "universityOption" data-toggle="toggle" data-size="mini" type="checkbox" checked onchange="options();">
 							</td>
 						</tr>
 					</table>		
@@ -53,10 +67,10 @@
 					<table width="100%">
 						<tr>
 							<td align="left">
-								<p> <img class = "iconFilters" src="img/home.png"> <b>Places</b> </p>
+								<img class = "iconFilters" src="img/home.png"> <b>Places</b>
 							</td>
 							<td align="right">
-								<input id = "placesOption" data-toggle="toggle" data-size="mini" type="checkbox" checked>
+								<input id = "placesOption" data-toggle="toggle" data-size="mini" type="checkbox" checked onchange="options();">
 							</td>
 						</tr>
 					</table>		
@@ -64,18 +78,18 @@
 					<table width="100%">
 						<tr>
 							<td align="left">
-								<p> <img class = "iconFilters" src="img/price.png"> <b>Price</b> </p>
+								<img class = "iconFilters" src="img/price.png"> <b>Price</b>
 							</td>
 							<td align="right">
-								<input id = "priceOption" data-toggle="toggle" data-size="mini" type="checkbox">
+								<input id = "priceOption" data-toggle="toggle" data-size="mini" type="checkbox" onchange="options();">
 							</td>
 						</tr>
 						<tr>
 							<td align="center"> 
-								Min: <input type="number" name="" style="width: 50%;" min = "0">
+								Min: <input id = "minPrice" type="number" name="" style="width: 50%;" min = "0">
 							</td>
 							<td align="left">
-								Max: <input type="number" name="" style="width: 50%;" min = "0">
+								Max: <input id = "maxPrice" type="number" name="" style="width: 50%;" min = "0">
 							</td>
 						</tr>
 					</table>		
@@ -83,7 +97,7 @@
 					<table width="100%">
 						<tr>
 							<td align="left">
-								<p> <img class = "iconFilters" src="img/crimes.png"> <b>Crimes</b> </p>
+								<img class = "iconFilters" src="img/crimes.png"> <b>Crimes</b>
 							</td>
 							<td align="right">
 								<button id = "btnCrimesMarker" type="button" class="btn btn-sm btn-info" style="visibility: hidden;" onclick="visibleMarkerPointsCrimes()"></button>
@@ -92,13 +106,22 @@
 								<button id = "btnHeatMap" type="button" class="btn btn-sm btn-info" style="visibility: hidden;" onclick="heatmap();"></button>
 							</td>
 							<td align="right">							
-								<input id = "crimesOption" data-toggle="toggle" data-size="mini" type="checkbox">
+								<input id = "crimesOption" data-toggle="toggle" data-size="mini" type="checkbox" onchange="options();">
 							</td>
 						</tr>
 					</table>
 					<hr>
-					<button type="button" class="btn btn-primary btnFilter active" onclick="options();">Apply</button>
-					<br>
+					<table width="100%">
+						<tr>
+							<td align="left">
+								<img class = "iconFilters" src="img/police.png"> <b>Police Stations</b>
+							</td>
+							<td align="right">							
+								<input id = "policeOption" data-toggle="toggle" data-size="mini" type="checkbox" onchange="options();">
+							</td>
+						</tr>
+					</table>
+					<hr>
 				</div>
 				<div class = "col-sm-8">
 					<div class = "thumbnail">
@@ -135,7 +158,20 @@
         							<tr> <td class = "moreInfoCol1"> Type of Property: </td> <td id = "modalType" class = "moreInfoCol2"></td></tr>
         							<tr> <td class = "moreInfoCol1"> Community Area: </td> <td id = "modalArea" class = "moreInfoCol2"></td></tr>
 									<tr> <td class = "moreInfoCol1"> Price: </td> <td class = "moreInfoCol2"></td></tr>
-									<tr> <td class = "moreInfoCol1"> Distance: </td> <td id = "modalDistance" class = "moreInfoCol2"></td></tr>
+									<tr> <td class = "moreInfoCol1"> Distance: </td> <td id = "modalDistance" class = "moreInfoCol2"></td>
+										<!-- <td id = "modalDistance">
+											<table border="1" width="100%">
+												<tr>
+													<td >B</td><td id = "modalDistanceBycicling"></td>
+													<td >D</td><td id = "modalDistanceDriving"></td>
+												</tr>
+												<tr>
+													<td >T</td><td id = "modalDistanceTransit"></td>
+													<td >W</td><td id = "modalDistanceWalking"></td>
+												</tr>
+											</table>
+										</td>-->
+									</tr>
         						</table>
 		        			</div>
 		        		</div>

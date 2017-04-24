@@ -92,3 +92,7 @@ body{
     width: 60%;
     padding-left: 5%
 }
+
+.weather{
+    float: right;
+}
