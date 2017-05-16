@@ -1,13 +1,13 @@
 var map;
 var markerUniversity;
 
-function initMap(){
+window.initMap = function(){
 	var data = {
 		name: 'Department of Computer Science - University of Illinois',
 		lat: 41.8708, 
 		lon: -87.6505
 	}
-	map = new google.maps.Map(d3.select("#map").node(), {
+	map = new google.maps.Map(document.getElementById('map'), {
   		zoom: 12,
 	  	center: new google.maps.LatLng(data.lat, data.lon),
 	});
@@ -282,7 +282,11 @@ function crimes(op){
 };
 
 function weatherData(){
-	//create a new httprequest for this session
+	$.getJSON("http://api.openweathermap.org/data/2.5/weather?q=chicago&appid=6aa0bdb1f586c5630d60b6237dfce45c", function (data) {
+			document.getElementById("weather").innerHTML = "Today the weather is <em><b>" + data.weather[0].main + "</b></em> </b> <img src = 'https://openweathermap.org/img/w/" + data.weather[0].icon + ".png'>";
+		});
+
+	/*//create a new httprequest for this session
 	var xmlhttp = new XMLHttpRequest();
 	//json format data resource url 
 	var url = "http://api.openweathermap.org/data/2.5/weather?q=chicago&appid=6aa0bdb1f586c5630d60b6237dfce45c";
@@ -301,7 +305,7 @@ function weatherData(){
 	        document.getElementById("weather").innerHTML = "Today the weather is <em><b>" + json.weather[0].main + "</b></em> </b> <img src = 'https://openweathermap.org/img/w/" + json.weather[0].icon + ".png'>";
 
 	    }
-	};
+	};*/
 }
 
 
