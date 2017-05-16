@@ -9,7 +9,7 @@ window.initMap = function(){
 	}
 	map = new google.maps.Map(document.getElementById('map'), {
   		zoom: 12,
-	  	center: new google.maps.LatLng(data.lat, data.lon),
+	  	center: new google.maps.LatLng(data.lat, data.lon)
 	});
 
 	var icon = {
@@ -282,8 +282,8 @@ function crimes(op){
 };
 
 function weatherData(){
-	$.getJSON("http://api.openweathermap.org/data/2.5/weather?q=chicago&appid=6aa0bdb1f586c5630d60b6237dfce45c", function (data) {
-			document.getElementById("weather").innerHTML = "Today the weather is <em><b>" + data.weather[0].main + "</b></em> </b> <img src = 'https://openweathermap.org/img/w/" + data.weather[0].icon + ".png'>";
+	$.getJSON("//api.openweathermap.org/data/2.5/weather?q=chicago&appid=6aa0bdb1f586c5630d60b6237dfce45c", function (data) {
+			document.getElementById("weather").innerHTML = "Today the weather is <em><b>" + data.weather[0].main + "</b></em> </b>";// <img src = 'https://openweathermap.org/img/w/" + data.weather[0].icon + ".png'>";
 		});
 
 	/*//create a new httprequest for this session
