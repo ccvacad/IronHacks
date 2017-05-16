@@ -283,7 +283,7 @@ function crimes(op){
 
 function weatherData(){
 	var xmlhttp = new XMLHttpRequest();
-	var url = "http://api.openweathermap.org/data/2.5/weather?q=chicago&appid=6aa0bdb1f586c5630d60b6237dfce45c";
+	var url = "api.openweathermap.org/data/2.5/weather?q=chicago&appid=6aa0bdb1f586c5630d60b6237dfce45c";
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
 	xmlhttp.onreadystatechange = function() {
